@@ -1,0 +1,72 @@
+HELP.md
+/target/
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+/build/
+#Eclipse
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.project
+.externalToolBuilders/
+*.launch
+.classpath
+.factorypath
+.buildpath
+.target
+.tern-project
+.springBeans
+.recommenders/
+
+## Maven:
+!.mvn/wrapper/maven-wrapper.jar
+/.mvn/
+/mvnw
+/mvnw.bat
+mvnw.cmd
+/log/
+*.log*
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+release.properties
+
+### config.properties
+config.properties
+
+
+### VS Code ###
+.vscode/
