@@ -1,0 +1,49 @@
+logging:
+  level:
+    ROOT: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.web: INFO
+    java.sql: DEBUG
+
+spring:
+  profiles:
+    active: dev
+
+---
+
+spring:
+  profiles: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+
+server:
+  port: 8080
+
+---
+
+spring:
+  profiles: prod
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mariadb://localhost:3306/warmup?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+  h2:
+    console:
+      enabled: true
+   
+server:
+  port: 8080

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,7 +19,7 @@ public class Account {
 
     private Integer month;
 
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-//    private Transaction transaction;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Transaction> transactionList;
 
 }
