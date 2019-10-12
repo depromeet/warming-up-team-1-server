@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long mid;
+	@Column
+	private Long mid;
 	private String kakaoId;
 	private String name;
 	private String profileImgUrl;
