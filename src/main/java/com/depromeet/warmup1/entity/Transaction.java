@@ -20,4 +20,7 @@ public class Transaction {
 
     @Enumerated(value = EnumType.STRING)
     private TransactionCategory transactionCategory;
+
+    @ManyToOne
+    private Account account;
 }
