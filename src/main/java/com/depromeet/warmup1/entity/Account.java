@@ -26,6 +26,11 @@ public class Account {
         this.month = month;
     }
 
+    public void update(Integer budget, Integer month){
+        this.budget = budget;
+        this.month = month;
+    }
+
 
 
 }
