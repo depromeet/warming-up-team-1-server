@@ -26,6 +26,8 @@ public class Transaction {
     @JoinColumn(name = "account_id")
     private Account account;
 
+
+    @Builder
     private Transaction(
             Integer money,
             String category,
@@ -37,12 +39,4 @@ public class Transaction {
         this.account = account;
     }
 
-    public static Transaction of(TransactionDto transactionDto, Account account){
-        return new Transaction(
-                transactionDto.getMoney(),
-                transactionDto.getCategory(),
-                transactionDto.getTransactionCategory(),
-                account
-        );
-    }
 }

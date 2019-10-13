@@ -1,5 +1,9 @@
 package com.depromeet.warmup1.entity;
 
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum TransactionCategory {
 
 
@@ -7,11 +11,5 @@ public enum TransactionCategory {
     EXPENDITURE("EXPENDITURE");
 
     private final String name;
-
-    TransactionCategory(String name) {
-        this.name = name;
-    }
-
-
 
 }
