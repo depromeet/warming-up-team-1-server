@@ -70,5 +70,3 @@ config.properties
 
 ### VS Code ###
 .vscode/
-**.class
-
