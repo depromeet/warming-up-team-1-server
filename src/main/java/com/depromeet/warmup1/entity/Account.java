@@ -19,13 +19,13 @@ public class Account {
 
     private Integer month;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Transaction> transactionList;
 
     @Builder
     private Account(Integer budget, Integer month){
         this.budget = budget;
         this.month = month;
     }
+
+
 
 }

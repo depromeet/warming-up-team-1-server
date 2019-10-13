@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl {
@@ -25,7 +27,44 @@ public class TransactionServiceImpl {
         return transactionRepository.save(transactionDto.toEntity(account));
     }
 
+    @Transactional
+    public Transaction updateTransaction(TransactionDto transactionDto, Long transactionId, Long accountId){
 
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(NotFoundException::new);
+
+        Transaction transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(NotFoundException::new);
+        transaction.update(transactionDto, account);
+
+        return transactionRepository.save(transaction);
+
+    }
+
+    @Transactional(readOnly = true)
+    public List<Transaction> getTransactionsByAccount(Long accountId){
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(NotFoundException::new);
+
+        return transactionRepository.findAllByAccount(account);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Transaction> getTransactionsByCategory(String category, Long accountId){
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(NotFoundException::new);
+
+        return transactionRepository.findAllByCategoryAndAccount(category,account);
+    }
+
+    @Transactional
+    public void deleteTransaction(Long transactionId){
+        Transaction transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(NotFoundException::new);
+
+        transactionRepository.delete(transaction);
+    }
 
 
 }

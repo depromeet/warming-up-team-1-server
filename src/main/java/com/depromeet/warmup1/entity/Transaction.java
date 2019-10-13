@@ -4,6 +4,7 @@ import com.depromeet.warmup1.dto.TransactionDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,6 +27,9 @@ public class Transaction {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    private LocalDateTime createdAt;
+
+
 
     @Builder
     private Transaction(
@@ -38,5 +42,15 @@ public class Transaction {
         this.transactionCategory = transactionCategory;
         this.account = account;
     }
+
+    public void update(TransactionDto transactionDto,
+                        Account account){
+        this.money = transactionDto.getMoney();
+        this.category = transactionDto.getCategory();
+        this.transactionCategory = transactionDto.getTransactionCategory();
+        this.account = account;
+    }
+
+
 
 }
