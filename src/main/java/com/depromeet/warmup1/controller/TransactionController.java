@@ -8,11 +8,9 @@ import com.depromeet.warmup1.entity.Transaction;
 import com.depromeet.warmup1.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class TransactionController {
@@ -26,9 +24,6 @@ public class TransactionController {
         return ResponseEntity.ok().body(transaction);
     }
 
-    public ResponseEntity<Account> saveAccount(@ModelAttribute AccountDto accountDto){
-        Account account = transactionService.createAccount(accountDto);
-        return ResponseEntity.ok().body(account);
-    }
+
 
 }

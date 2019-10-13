@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-
 public class TransactionServiceImpl {
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
@@ -26,11 +25,7 @@ public class TransactionServiceImpl {
         return transactionRepository.save(transactionDto.toEntity(account));
     }
 
-    @Transactional
-    public Account createAccount(AccountDto accountDto){
-        Account account = accountDto.toEntity();
-        return accountRepository.save(account);
-    }
+
 
 
 }

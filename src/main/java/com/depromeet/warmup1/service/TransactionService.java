@@ -8,5 +8,5 @@ import com.depromeet.warmup1.entity.Transaction;
 
 public interface TransactionService {
     Transaction createTransaction(TransactionDto transactionDto, Long accountId);
-    Account createAccount(AccountDto accountDto);
+
 }
