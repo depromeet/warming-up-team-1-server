@@ -1,12 +1,12 @@
 package com.depromeet.warmup1.service.impl;
 
-import com.depromeet.warmup1.dto.AccountDto;
 import com.depromeet.warmup1.dto.TransactionDto;
 import com.depromeet.warmup1.entity.Account;
 import com.depromeet.warmup1.entity.Transaction;
 import com.depromeet.warmup1.exception.NotFoundException;
 import com.depromeet.warmup1.repository.AccountRepository;
 import com.depromeet.warmup1.repository.TransactionRepository;
+import com.depromeet.warmup1.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,34 +17,38 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class TransactionServiceImpl {
+public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
 
+    @Override
     @Transactional
-    public Transaction createTransaction(TransactionDto transactionDto, Long accountId){
+    public Transaction createTransaction(TransactionDto transactionDto, Long accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
 
         return transactionRepository.save(transactionDto.toEntity(account));
     }
 
+    @Override
     @Transactional
-    public Transaction updateTransaction(TransactionDto transactionDto, Long transactionId, Long accountId){
+    public void updateTransaction(TransactionDto transactionDto, Long transactionId, Long accountId) {
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
 
         Transaction transaction = transactionRepository.findById(transactionId)
                 .orElseThrow(NotFoundException::new);
+
         transaction.update(transactionDto, account);
 
-        return transactionRepository.save(transaction);
+        transactionRepository.save(transaction);
 
     }
 
+    @Override
     @Transactional(readOnly = true)
-    public List<Transaction> getTransactionsByAccount(Long accountId, Pageable pageable){
+    public List<Transaction> getTransactionsByAccount(Long accountId, Pageable pageable) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
 
@@ -53,19 +57,21 @@ public class TransactionServiceImpl {
                 .collect(Collectors.toList());
     }
 
+    @Override
     @Transactional(readOnly = true)
-    public List<Transaction> getTransactionsByCategory(String category, Long accountId, Pageable pageable){
+    public List<Transaction> getTransactionsByCategory(String category, Long accountId, Pageable pageable) {
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
 
-        return transactionRepository.findAllByCategoryAndAccount(category,account, pageable)
+        return transactionRepository.findAllByCategoryAndAccount(category, account, pageable)
                 .stream()
                 .collect(Collectors.toList());
     }
 
+    @Override
     @Transactional
-    public void deleteTransaction(Long transactionId){
+    public void deleteTransaction(Long transactionId) {
         Transaction transaction = transactionRepository.findById(transactionId)
                 .orElseThrow(NotFoundException::new);
 

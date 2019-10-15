@@ -2,10 +2,8 @@ package com.depromeet.warmup1.controller;
 
 
 import com.depromeet.warmup1.dto.AccountDto;
-import com.depromeet.warmup1.dto.ResponseDto;
 import com.depromeet.warmup1.entity.Account;
 import com.depromeet.warmup1.service.AccountService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

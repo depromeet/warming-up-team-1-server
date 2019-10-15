@@ -7,7 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface TransactionRepository  extends JpaRepository<Transaction, Long> {
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     Page<Transaction> findAllByCategoryAndAccount(String category, Account account, Pageable pageable);
+
     Page<Transaction> findAllByAccount(Account account, Pageable pageable);
 }
