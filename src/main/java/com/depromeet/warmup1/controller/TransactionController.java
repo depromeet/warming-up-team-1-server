@@ -51,7 +51,7 @@ public class TransactionController {
 
     }
 
-    @GetMapping("/accounts/{accountId}/transactions")
+    @GetMapping("/accounts/{accountId}/transactions/category")
     public ResponseEntity<List<Transaction>> getTransactionsByCategory(@RequestParam(defaultValue = "0") int page,
                                                                        @RequestParam(defaultValue = "20") int size,
                                                                        @NotNull @RequestParam String category,
