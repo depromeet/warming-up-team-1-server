@@ -5,9 +5,11 @@ import com.depromeet.warmup1.entity.Account;
 import com.depromeet.warmup1.entity.Transaction;
 import com.depromeet.warmup1.entity.TransactionCategory;
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
+@Setter
 public class TransactionDto {
     private Integer money;
 

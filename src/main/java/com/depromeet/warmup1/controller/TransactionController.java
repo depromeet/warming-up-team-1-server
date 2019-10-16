@@ -65,7 +65,7 @@ public class TransactionController {
 
     }
 
-    @GetMapping("/accounts/transactions/{transactionId}")
+    @DeleteMapping("/accounts/transactions/{transactionId}")
     public ResponseEntity<String> getTransactionsByCategory(@PathVariable Long transactionId) {
 
         transactionService.deleteTransaction(transactionId);

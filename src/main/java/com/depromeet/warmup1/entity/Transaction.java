@@ -2,6 +2,8 @@ package com.depromeet.warmup1.entity;
 
 import com.depromeet.warmup1.dto.TransactionDto;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class Transaction {
 
     @Id
@@ -29,6 +32,8 @@ public class Transaction {
     @JoinColumn(name = "account_id")
     private Account account;
 
+
+    @CreatedDate
     private LocalDateTime createdAt;
 
 
