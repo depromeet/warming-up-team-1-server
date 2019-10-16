@@ -15,12 +15,15 @@ public class TransactionDto {
 
     private TransactionCategory transactionCategory;
 
+    private String memo;
 
-    public Transaction toEntity(Account account){
+
+    public Transaction toEntity(Account account) {
         return Transaction.builder()
                 .money(money)
                 .category(category)
                 .transactionCategory(transactionCategory)
+                .memo(memo)
                 .account(account)
                 .build();
     }

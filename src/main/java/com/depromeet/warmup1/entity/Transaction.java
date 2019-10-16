@@ -23,6 +23,8 @@ public class Transaction {
     @Enumerated(value = EnumType.STRING)
     private TransactionCategory transactionCategory;
 
+    private String memo;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
@@ -30,27 +32,28 @@ public class Transaction {
     private LocalDateTime createdAt;
 
 
-
     @Builder
     private Transaction(
             Integer money,
             String category,
             TransactionCategory transactionCategory,
-            Account account){
+            String memo,
+            Account account) {
         this.money = money;
         this.category = category;
         this.transactionCategory = transactionCategory;
+        this.memo = memo;
         this.account = account;
     }
 
     public void update(TransactionDto transactionDto,
-                        Account account){
+                       Account account) {
         this.money = transactionDto.getMoney();
         this.category = transactionDto.getCategory();
         this.transactionCategory = transactionDto.getTransactionCategory();
+        this.memo = transactionDto.getMemo();
         this.account = account;
     }
-
 
 
 }
