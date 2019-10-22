@@ -87,7 +87,7 @@ public class JwtFactory {
             token = tokenExtractor(header);
         } catch (IllegalArgumentException e) {
             log.warn("Failed to extract token from header. header:" + header, e);
-            throw new JWTException(e.getMessage());
+            throw new JWTException("Failed to extract token from header. header:" + header);
         }
 
         DecodedJWT decodedJWT;
@@ -101,7 +101,7 @@ public class JwtFactory {
         Claim idClaim = claims.get("ID");
         if (idClaim == null) {
             log.warn("Failed to decode jwt token. header:" + header);
-            return Optional.empty();
+            throw new JWTException("Failed to decode jwt token. header:" + header);
         }
 
         return Optional.of(idClaim.asLong());

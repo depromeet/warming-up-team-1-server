@@ -4,12 +4,14 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Verification;
+import com.depromeet.warmup1.interceptor.AuthInterceptor;
 import com.depromeet.warmup1.service.impl.JwtFactory;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -45,14 +47,13 @@ public class JwtConfig implements WebMvcConfigurer {
         return new JwtFactory(jwtVerifier(), jwtSettings());
     }
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new AuthInterceptor(jwtFactory()))
-//                .addPathPatterns("/api/**")
-//                .excludePathPatterns("/api/monitor/l7check")
-//                .excludePathPatterns("/api/members/login");
-//
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthInterceptor(jwtFactory()))
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/members/login");
+
+    }
 
 
     @Getter
