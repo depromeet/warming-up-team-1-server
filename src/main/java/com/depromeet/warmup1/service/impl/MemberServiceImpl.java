@@ -5,6 +5,7 @@ import com.depromeet.warmup1.dto.KakaoUserDto;
 import com.depromeet.warmup1.dto.LoginDto;
 import com.depromeet.warmup1.entity.Member;
 import com.depromeet.warmup1.exception.ApiFailedException;
+import com.depromeet.warmup1.exception.NotFoundException;
 import com.depromeet.warmup1.repostiroy.MemberRepository;
 import com.depromeet.warmup1.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,16 @@ public class MemberServiceImpl implements MemberService {
                 jwtFactory.generateToken(member),
                 jwtFactory.generateRefreshToken(member)
         );
+
+    }
+
+    @Override
+    public String getJwtToken(String refreshToken) {
+        Long id = jwtFactory.getMemberId(refreshToken).get();
+        Member member = memberRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+
+        return jwtFactory.generateToken(member);
 
     }
 

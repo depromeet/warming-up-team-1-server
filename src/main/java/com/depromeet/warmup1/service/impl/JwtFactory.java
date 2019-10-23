@@ -59,9 +59,6 @@ public class JwtFactory {
                 .withClaim("USERNAME", member.getName())
                 .withClaim("ID", member.getMid())
                 .withIssuedAt(java.sql.Timestamp.valueOf(currentTime))
-                .withExpiresAt(java.sql.Timestamp.valueOf(
-                        currentTime.minusDays(jwtSettings.getRefreshTokenExpTime())
-                ))
                 .sign(Algorithm.HMAC256(jwtSettings.getTokenSigningKey()));
 
 
@@ -79,6 +76,7 @@ public class JwtFactory {
             return Optional.empty();
         }
     }
+
 
     private Optional<Long> decodeToken(String header) {
 

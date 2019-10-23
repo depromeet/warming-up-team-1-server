@@ -27,9 +27,6 @@ public class JwtConfig implements WebMvcConfigurer {
     @Value("${jwt.tokenExpirationTime}")
     private Integer tokenExpirationTime;
 
-    @Value("${jwt.refreshTokenExpTime}")
-    private Integer refreshTokenExpTime;
-
 
     @Bean
     public JWTVerifier jwtVerifier() {
@@ -39,7 +36,7 @@ public class JwtConfig implements WebMvcConfigurer {
 
     @Bean
     public JwtSettings jwtSettings() {
-        return JwtSettings.of(tokenIssuer, tokenSigningKey, tokenExpirationTime, refreshTokenExpTime);
+        return JwtSettings.of(tokenIssuer, tokenSigningKey, tokenExpirationTime);
     }
 
     @Bean
@@ -61,23 +58,20 @@ public class JwtConfig implements WebMvcConfigurer {
         private final String tokenIssuer;
         private final String tokenSigningKey;
         private final Integer tokenExpirationTime;
-        private final Integer refreshTokenExpTime;
+
 
         private JwtSettings(String tokenIssuer,
                             String tokenSigningKey,
-                            Integer tokenExpirationTime,
-                            Integer refreshTokenExpTime) {
+                            Integer tokenExpirationTime) {
             this.tokenIssuer = tokenIssuer;
             this.tokenSigningKey = tokenSigningKey;
             this.tokenExpirationTime = tokenExpirationTime;
-            this.refreshTokenExpTime = refreshTokenExpTime;
         }
 
         public static JwtSettings of(String tokenIssuer,
                                      String tokenSigningKey,
-                                     Integer tokenExpirationTime,
-                                     Integer refreshTokenExpTime) {
-            return new JwtSettings(tokenIssuer, tokenSigningKey, tokenExpirationTime, refreshTokenExpTime);
+                                     Integer tokenExpirationTime) {
+            return new JwtSettings(tokenIssuer, tokenSigningKey, tokenExpirationTime);
         }
     }
 }

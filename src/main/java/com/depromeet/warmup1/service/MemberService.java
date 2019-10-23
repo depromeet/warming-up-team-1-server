@@ -7,4 +7,6 @@ public interface MemberService {
     Member getMemberByMid(Long mid);
 
     LoginDto getOrCreateMember(String kakaoToken);
+
+    String getJwtToken(String refreshToken);
 }
