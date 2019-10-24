@@ -1,5 +1,8 @@
 package com.depromeet.warmup1.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,13 +14,16 @@ import com.depromeet.warmup1.entity.Member;
 import com.depromeet.warmup1.exception.ApiFailedException;
 import com.depromeet.warmup1.repostiroy.MemberRepository;
 import com.depromeet.warmup1.service.MemberService;
+import com.depromeet.warmup1.util.UtilEncoder;
 
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private KakaoAdapter kakaoAdapter;
 	@Autowired
 	private MemberRepository memberRepository;
+	@Autowired
+	private UtilEncoder utilEncoder;
 
 	@Transactional(readOnly = true)
 	public Member getMemberByMid(Long mid) {
@@ -49,5 +55,35 @@ public class MemberServiceImpl implements MemberService{
 			return memberRepository.save(member);
 		});
 	}
-	
+
+	@Override
+	@Transactional
+	public String createConnectKey(Long mid) {
+		Member member = memberRepository.findOneByMid(mid);
+		if (member == null)
+			return null;
+		String target = member.getMid() + ":" + LocalDateTime.now().toString();
+		member.setConnectKey(utilEncoder.encoding(target));
+		memberRepository.save(member);
+		return member.getConnectKey();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Member> getCouple(String connectKey) {
+		return memberRepository.findAllByConnectKey(connectKey);
+	}
+
+	@Override
+	@Transactional
+	public Member connectMember(Long mid, String connectKey) {
+		List<Member> members = getCouple(connectKey);
+		Member member = memberRepository.findOneByMid(mid);
+		if (member == null)
+			return null;
+		if (members.size() > 2 | members.size() == 0)
+			return null;
+		member.setConnectKey(connectKey);
+		return memberRepository.save(member);
+	}
 }
