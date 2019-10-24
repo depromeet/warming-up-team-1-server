@@ -22,7 +22,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
         String token = request.getHeader("authorization");
         Long id = jwtFactory.getMemberId(token)
-                .orElseThrow(() -> new UnauthorizedException("토큰이 유효하지 않습니다."));
+                .orElseThrow(() -> new UnauthorizedException("Token is invalid."));
 
         request.setAttribute("id", id);
 

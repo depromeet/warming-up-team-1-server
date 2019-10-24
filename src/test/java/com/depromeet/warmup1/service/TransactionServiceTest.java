@@ -41,7 +41,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    public void ì›”ë³„_ê±°ëž˜ë‚´ì—­_ì¡°íšŒ() {
+    public void ¿ùº°_°Å·¡³»¿ª_Á¶È¸() {
         //given
         Account account = TestHelper.createAccount(1l, 50000, 12);
 
