@@ -2,9 +2,9 @@ package com.depromeet.warmup1.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,6 +19,9 @@ public class Account {
     private Integer budget;
 
     private Integer month;
+
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    private List<Transaction> transactions = new LinkedList<>();
 
 
     @Builder

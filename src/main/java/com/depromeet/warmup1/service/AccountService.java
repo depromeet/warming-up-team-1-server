@@ -4,11 +4,11 @@ import com.depromeet.warmup1.dto.AccountDto;
 import com.depromeet.warmup1.entity.Account;
 
 public interface AccountService {
-    Account createAccount(AccountDto accountDto);
+    Account createAccount(AccountDto.Request request);
 
-    Account getAccount(Long accountId);
+    AccountDto.Response getAccount(Long accountId);
 
-    void updateAccount(AccountDto accountDto, Long accountId);
+    void updateAccount(AccountDto.Request request, Long accountId);
 
     void deleteAccount(Long accountId);
 }
