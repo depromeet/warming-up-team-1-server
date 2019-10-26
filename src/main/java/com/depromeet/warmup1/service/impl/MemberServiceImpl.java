@@ -81,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
             return null;
         String target = member.getMid() + ":" + LocalDateTime.now().toString();
         member.setConnectKey(utilEncoder.encoding(target));
-        memberRepository.save(member);
+        //memberRepository.save(member);
         return member.getConnectKey();
     }
 

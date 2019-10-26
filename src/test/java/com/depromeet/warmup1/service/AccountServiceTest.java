@@ -30,7 +30,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void °¡°èºÎ_Á¶È¸() {
+    public void ê°€ê³„ë¶€_ì¡°íšŒ() {
         //given
         Account account = TestHelper.createAccount(1l, 50000, 12);
         when(accountRepository.findById(account.getId())).thenReturn(Optional.ofNullable(account));
