@@ -21,16 +21,10 @@ public class Transaction {
 
     private Integer money;
 
-
     @Enumerated(value = EnumType.STRING)
     private TransactionCategory transactionCategory;
 
     private String memo;
-
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;
-
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -38,6 +32,10 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @Builder
     private Transaction(
