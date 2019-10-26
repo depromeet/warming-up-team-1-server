@@ -2,9 +2,11 @@ package com.depromeet.warmup1.service.impl;
 
 import com.depromeet.warmup1.dto.TransactionDto;
 import com.depromeet.warmup1.entity.Account;
+import com.depromeet.warmup1.entity.Category;
 import com.depromeet.warmup1.entity.Transaction;
 import com.depromeet.warmup1.exception.NotFoundException;
 import com.depromeet.warmup1.repository.AccountRepository;
+import com.depromeet.warmup1.repository.CategoryRepository;
 import com.depromeet.warmup1.repository.TransactionRepository;
 import com.depromeet.warmup1.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional
@@ -40,7 +43,10 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = transactionRepository.findById(transactionId)
                 .orElseThrow(NotFoundException::new);
 
-        transaction.update(transactionDto, account);
+        Category category = categoryRepository.findByName(transactionDto.getCategory())
+                .orElseThrow(NotFoundException::new);
+
+        transaction.update(transactionDto, account, category);
 
         transactionRepository.save(transaction);
 
