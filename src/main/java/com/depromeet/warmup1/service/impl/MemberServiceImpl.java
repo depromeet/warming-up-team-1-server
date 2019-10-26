@@ -1,22 +1,26 @@
 package com.depromeet.warmup1.service.impl;
 
-import com.depromeet.warmup1.adapter.KakaoAdapter;
-import com.depromeet.warmup1.dto.KakaoUserDto;
-import com.depromeet.warmup1.dto.LoginDto;
-import com.depromeet.warmup1.entity.Member;
-import com.depromeet.warmup1.exception.ApiFailedException;
-import com.depromeet.warmup1.exception.NotFoundException;
-import com.depromeet.warmup1.repository.MemberRepository;
-import com.depromeet.warmup1.service.MemberService;
-import com.depromeet.warmup1.util.UtilEncoder;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.depromeet.warmup1.adapter.KakaoAdapter;
+import com.depromeet.warmup1.dto.KakaoUserDto;
+import com.depromeet.warmup1.dto.LoginDto;
+import com.depromeet.warmup1.entity.Connect;
+import com.depromeet.warmup1.entity.Member;
+import com.depromeet.warmup1.exception.ApiFailedException;
+import com.depromeet.warmup1.exception.NotFoundException;
+import com.depromeet.warmup1.repository.ConnectRepository;
+import com.depromeet.warmup1.repository.MemberRepository;
+import com.depromeet.warmup1.service.MemberService;
+import com.depromeet.warmup1.util.UtilEncoder;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +32,9 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
     @Autowired
     private UtilEncoder utilEncoder;
-
+    @Autowired
+    private ConnectRepository connectRepository;
+    
     @Override
     @Transactional(readOnly = true)
     public Member getMemberByMid(Long mid) {
@@ -98,9 +104,16 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findOneByMid(mid);
         if (member == null)
             return null;
-        if (members.size() > 2 | members.size() == 0)
+        if (members.size() > 2 || members.size() == 0)
             return null;
+        if(member.getConnectKey()!=null)
+        	return null;
         member.setConnectKey(connectKey);
+        members.add(member);
+        Connect connect = Connect.builder().connectKey(connectKey)
+        		.build();
+        connectRepository.save(connect);
+        
         return memberRepository.save(member);
     }
 }
