@@ -2,8 +2,9 @@ package com.depromeet.warmup1.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 @Getter
@@ -21,16 +22,15 @@ public class Account {
 
 
     @Builder
-    private Account(Integer budget, Integer month){
+    private Account(Integer budget, Integer month) {
         this.budget = budget;
         this.month = month;
     }
 
-    public void update(Integer budget, Integer month){
+    public void update(Integer budget, Integer month) {
         this.budget = budget;
         this.month = month;
     }
-
 
 
 }
