@@ -40,7 +40,7 @@ spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/warmup?useUnicode=true&characterEncoding=utf8
     username: root
-    password: 
+    password: root
   h2:
     console:
       enabled: true
