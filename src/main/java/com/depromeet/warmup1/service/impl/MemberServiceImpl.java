@@ -14,6 +14,7 @@ import com.depromeet.warmup1.dto.LoginDto;
 import com.depromeet.warmup1.entity.Connect;
 import com.depromeet.warmup1.entity.Member;
 import com.depromeet.warmup1.exception.ApiFailedException;
+import com.depromeet.warmup1.exception.BadRequestException;
 import com.depromeet.warmup1.exception.NotFoundException;
 import com.depromeet.warmup1.repository.ConnectRepository;
 import com.depromeet.warmup1.repository.MemberRepository;
@@ -84,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
     public String createConnectKey(Long mid) {
         Member member = memberRepository.findOneByMid(mid);
         if (member == null)
-            return null;
+            throw new NotFoundException();
         String target = member.getMid() + ":" + LocalDateTime.now().toString();
         member.setConnectKey(utilEncoder.encoding(target));
         //memberRepository.save(member);
@@ -94,7 +95,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional(readOnly = true)
     public List<Member> getCouple(String connectKey) {
-        return memberRepository.findAllByConnectKey(connectKey);
+        List<Member> members = memberRepository.findAllByConnectKey(connectKey);
+        if(members == null)
+        	throw new NotFoundException();
+        return members;
     }
 
     @Override
@@ -103,11 +107,11 @@ public class MemberServiceImpl implements MemberService {
         List<Member> members = getCouple(connectKey);
         Member member = memberRepository.findOneByMid(mid);
         if (member == null)
-            return null;
+        	throw new NotFoundException();
         if (members.size() > 2 || members.size() == 0)
-            return null;
+            throw new BadRequestException();
         if(member.getConnectKey()!=null)
-        	return null;
+        	throw new BadRequestException();
         member.setConnectKey(connectKey);
         members.add(member);
         Connect connect = Connect.builder().connectKey(connectKey)
