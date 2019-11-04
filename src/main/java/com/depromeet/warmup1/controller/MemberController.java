@@ -21,37 +21,34 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 
-	@PostMapping("api/member/login")
+	@PostMapping("api/members/login")
 	public ResponseEntity<LoginDto> login(@RequestBody String kakaoToken) {
 		return ResponseEntity.ok(memberService.getOrCreateMember(kakaoToken));
 	}
 
-	@GetMapping("api/member/token")
+	@GetMapping("api/members/token")
 	public ResponseEntity<String> getToken(@RequestHeader String refreshToken) {
 		return ResponseEntity.ok(memberService.getJwtToken(refreshToken));
 	}
 
-	@GetMapping("api/member/connectkey/{mid}")
+	@GetMapping("api/members/connect-key/{mid}")
 	public ResponseEntity<String> createConnectKey(@PathVariable Long mid) {
 		String key = memberService.createConnectKey(mid);
-		if (key == null)
-			return ResponseEntity.badRequest().body(null);
+		
 		return ResponseEntity.ok().body(key);
 	}
 
-	@GetMapping("api/member/couple/{key}")
+	@GetMapping("api/members/couple/{key}")
 	public ResponseEntity<List<Member>> getCouple(@PathVariable String key) {
 		List<Member> couple = memberService.getCouple(key);
-		if (couple == null)
-			return ResponseEntity.badRequest().body(null);
+		
 		return ResponseEntity.ok().body(couple);
 	}
 
-	@PutMapping("api/member/connect/{mid}/{key}")
+	@PutMapping("api/members/connect/{mid}/{key}")
 	public ResponseEntity<Member> connectMember(@PathVariable Long mid, @PathVariable String key) {
 		Member member = memberService.connectMember(mid, key);
-		if (member == null)
-			return ResponseEntity.badRequest().body(null);
+		
 		return ResponseEntity.ok().body(member);
 	}
 }

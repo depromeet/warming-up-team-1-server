@@ -1,2 +1,2 @@
-insert into member (MID, KAKAO_ID, NAME, PROFILE_IMG_URL) values (1, 'kakaoid1', '±‘ºÆ', 'image1')
-insert into member (MID, KAKAO_ID, NAME, PROFILE_IMG_URL) values (2, 'kakaoid2', 'øπ∏∞', 'image2')
+insert into member (MID, KAKAO_ID, NAME, PROFILE_IMG_URL) values (1, 'kakaoid1', 'Í∑úÏÑù', 'image1')
+insert into member (MID, KAKAO_ID, NAME, PROFILE_IMG_URL) values (2, 'kakaoid2', 'ÏòàÎ¶∞', 'image2')

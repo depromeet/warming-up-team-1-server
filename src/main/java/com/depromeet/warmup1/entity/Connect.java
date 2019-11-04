@@ -1,7 +1,6 @@
 package com.depromeet.warmup1.entity;
 
-import java.util.List;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -17,5 +16,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Connect {
 	@Id
+	@Column(length=50)
 	private String connectKey;
 }
