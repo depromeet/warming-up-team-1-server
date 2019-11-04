@@ -1,30 +1,33 @@
 package com.depromeet.warmup1;
 
-import com.depromeet.warmup1.dto.AccountDto;
-import com.depromeet.warmup1.entity.Account;
-import com.depromeet.warmup1.entity.Transaction;
-import com.depromeet.warmup1.entity.TransactionCategory;
+import com.depromeet.warmup1.dto.AccountRequest;
+import com.depromeet.warmup1.dto.CategoryRequest;
+import com.depromeet.warmup1.entity.*;
 
 public final class TestHelper {
     private TestHelper() {
     }
 
-    public static AccountDto createAccountDto(Integer budget, Integer month) {
-        AccountDto accountDto = new AccountDto();
-        accountDto.setBudget(budget);
-        accountDto.setMonth(month);
+    public static Connect createConnect() {
+        Connect connect = new Connect();
+        connect.setConnectKey("1");
+        return connect;
+    }
+
+    public static AccountRequest createAccountDto(Integer budget, Integer month) {
+        AccountRequest accountDto = new AccountRequest(budget, month);
         return accountDto;
     }
 
     public static Account createAccount(Long id, Integer budget, Integer month) {
-        Account account = createAccountDto(budget, month).toEntity();
+        Account account = createAccountDto(budget, month).toEntity(createConnect());
         account.setId(id);
         return account;
     }
 
     public static Transaction createTransaction(Long id,
                                                 Integer money,
-                                                String category,
+                                                Category category,
                                                 TransactionCategory transactionCategory,
                                                 String memo,
                                                 Account account) {
@@ -38,5 +41,12 @@ public final class TestHelper {
                 .build();
 
 
+    }
+
+    public static Category createCategory() {
+        CategoryRequest categoryDto = new CategoryRequest("11", "1");
+        Connect connect = new Connect();
+        connect.setConnectKey("key");
+        return categoryDto.toEntity(connect);
     }
 }

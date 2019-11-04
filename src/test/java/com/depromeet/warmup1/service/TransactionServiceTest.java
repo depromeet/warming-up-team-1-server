@@ -3,9 +3,11 @@ package com.depromeet.warmup1.service;
 
 import com.depromeet.warmup1.TestHelper;
 import com.depromeet.warmup1.entity.Account;
+import com.depromeet.warmup1.entity.Category;
 import com.depromeet.warmup1.entity.Transaction;
 import com.depromeet.warmup1.entity.TransactionCategory;
 import com.depromeet.warmup1.repository.AccountRepository;
+import com.depromeet.warmup1.repository.CategoryRepository;
 import com.depromeet.warmup1.repository.TransactionRepository;
 import com.depromeet.warmup1.service.impl.TransactionServiceImpl;
 import org.junit.Before;
@@ -32,25 +34,28 @@ public class TransactionServiceTest {
     private AccountRepository accountRepository;
     @Mock
     private TransactionRepository transactionRepository;
+    @Mock
+    private CategoryRepository categoryRepository;
 
     private TransactionService transactionService;
 
     @Before
     public void setup() {
-        transactionService = new TransactionServiceImpl(transactionRepository, accountRepository);
+        transactionService = new TransactionServiceImpl(transactionRepository, accountRepository, categoryRepository);
     }
 
     @Test
-    public void ¿ùº°_°Å·¡³»¿ª_Á¶È¸() {
+    public void ì›”ë³„_ê±°ëž˜ë‚´ì—­_ì¡°íšŒ() {
         //given
         Account account = TestHelper.createAccount(1l, 50000, 12);
+        Category category = TestHelper.createCategory();
 
         List<Transaction> transactionList = new LinkedList<>();
         for (int i = 0; i < 5; i++) {
             transactionList.add(TestHelper.createTransaction(
                     Long.valueOf(i),
                     i * 1000,
-                    "test",
+                    category,
                     TransactionCategory.EXPENDITURE,
                     "memo",
                     account

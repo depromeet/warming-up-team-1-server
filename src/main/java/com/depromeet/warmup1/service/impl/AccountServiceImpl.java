@@ -1,31 +1,43 @@
 package com.depromeet.warmup1.service.impl;
 
 
-import com.depromeet.warmup1.dto.AccountDto;
+import com.depromeet.warmup1.dto.AccountRequest;
+import com.depromeet.warmup1.dto.AccountResponse;
 import com.depromeet.warmup1.entity.Account;
+import com.depromeet.warmup1.entity.Connect;
 import com.depromeet.warmup1.entity.TransactionCategory;
 import com.depromeet.warmup1.exception.NotFoundException;
 import com.depromeet.warmup1.repository.AccountRepository;
+import com.depromeet.warmup1.repository.ConnectRepository;
 import com.depromeet.warmup1.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
+    private final ConnectRepository connectRepository;
 
     @Override
     @Transactional
-    public Account createAccount(AccountDto.Request request) {
-        Account account = request.toEntity();
-        return accountRepository.save(account);
+    public AccountResponse createAccount(AccountRequest request, Long connectId) {
+        Connect connect = connectRepository.findById(connectId)
+                .orElseThrow(NotFoundException::new);
+        Optional<Account> findAccount = accountRepository.findByMonthAndConnect(request.getMonth(), connect);
+        if (findAccount.isPresent()) {
+            return getAccount(findAccount.get().getId());
+        }
+        Account account = request.toEntity(connect);
+        return AccountResponse.of(accountRepository.save(account), 0);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public AccountDto.Response getAccount(Long accountId) {
+    public AccountResponse getAccount(Long accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
 
@@ -45,12 +57,12 @@ public class AccountServiceImpl implements AccountService {
         insufficientCash += expenditure;
 
 
-        return AccountDto.responseOf(account, insufficientCash);
+        return AccountResponse.of(account, insufficientCash);
     }
 
     @Override
     @Transactional
-    public void updateAccount(AccountDto.Request request, Long accountId) {
+    public void updateAccount(AccountRequest request, Long accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
 

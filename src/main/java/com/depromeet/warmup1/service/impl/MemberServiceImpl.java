@@ -1,13 +1,5 @@
 package com.depromeet.warmup1.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.depromeet.warmup1.adapter.KakaoAdapter;
 import com.depromeet.warmup1.dto.KakaoUserDto;
 import com.depromeet.warmup1.dto.LoginDto;
@@ -19,22 +11,27 @@ import com.depromeet.warmup1.repository.ConnectRepository;
 import com.depromeet.warmup1.repository.MemberRepository;
 import com.depromeet.warmup1.service.MemberService;
 import com.depromeet.warmup1.util.UtilEncoder;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
     private final JwtFactory jwtFactory;
-    @Autowired
-    private KakaoAdapter kakaoAdapter;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private UtilEncoder utilEncoder;
-    @Autowired
-    private ConnectRepository connectRepository;
-    
+
+    private final KakaoAdapter kakaoAdapter;
+
+    private final MemberRepository memberRepository;
+
+    private final UtilEncoder utilEncoder;
+
+    private final ConnectRepository connectRepository;
+
     @Override
     @Transactional(readOnly = true)
     public Member getMemberByMid(Long mid) {
@@ -71,6 +68,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public String getJwtToken(String refreshToken) {
         Long id = jwtFactory.getMemberId(refreshToken).get();
         Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
@@ -106,14 +104,15 @@ public class MemberServiceImpl implements MemberService {
             return null;
         if (members.size() > 2 || members.size() == 0)
             return null;
-        if(member.getConnectKey()!=null)
-        	return null;
+        if (member.getConnectKey() != null)
+            return null;
         member.setConnectKey(connectKey);
         members.add(member);
         Connect connect = Connect.builder().connectKey(connectKey)
-        		.build();
+                .build();
         connectRepository.save(connect);
-        
+
         return memberRepository.save(member);
     }
+
 }

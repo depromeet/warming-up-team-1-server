@@ -23,14 +23,18 @@ public class Category {
 
     private String image;
 
-
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new LinkedList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "connect_id")
+    private Connect connect;
+
     @Builder
-    private Category(String name, String image) {
+    private Category(String name, String image, Connect connect) {
         this.name = name;
         this.image = image;
+        this.connect = connect;
     }
 
     public void update(String name, String image) {

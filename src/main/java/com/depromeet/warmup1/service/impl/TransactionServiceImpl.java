@@ -29,8 +29,10 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction createTransaction(TransactionDto transactionDto, Long accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
+        Category category = categoryRepository.findById(transactionDto.getCategoryId())
+                .orElseThrow(NotFoundException::new);
 
-        return transactionRepository.save(transactionDto.toEntity(account));
+        return transactionRepository.save(transactionDto.toEntity(account, category));
     }
 
     @Override
@@ -43,7 +45,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = transactionRepository.findById(transactionId)
                 .orElseThrow(NotFoundException::new);
 
-        Category category = categoryRepository.findByName(transactionDto.getCategory())
+        Category category = categoryRepository.findById(transactionDto.getCategoryId())
                 .orElseThrow(NotFoundException::new);
 
         transaction.update(transactionDto, account, category);
@@ -51,6 +53,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(transaction);
 
     }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -65,9 +68,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Transaction> getTransactionsByCategory(String category, Long accountId, Pageable pageable) {
+    public List<Transaction> getTransactionsByCategory(Long categoryId, Long accountId, Pageable pageable) {
 
         Account account = accountRepository.findById(accountId)
+                .orElseThrow(NotFoundException::new);
+
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(NotFoundException::new);
 
         return transactionRepository.findAllByCategoryAndAccount(category, account, pageable)

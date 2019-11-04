@@ -23,9 +23,14 @@ public class Account {
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new LinkedList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "connect_id")
+    private Connect connect;
+
 
     @Builder
-    private Account(Integer budget, Integer month) {
+    private Account(Integer budget, Integer month, Connect connect) {
+        this.connect = connect;
         this.budget = budget;
         this.month = month;
     }

@@ -54,12 +54,12 @@ public class TransactionController {
     @GetMapping("/accounts/{accountId}/transactions/category")
     public ResponseEntity<List<Transaction>> getTransactionsByCategory(@RequestParam(defaultValue = "0") int page,
                                                                        @RequestParam(defaultValue = "20") int size,
-                                                                       @NotNull @RequestParam String category,
+                                                                       @NotNull @RequestParam Long categoryId,
                                                                        @PathVariable Long accountId) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        List<Transaction> transactions = transactionService.getTransactionsByCategory(category, accountId, pageable);
+        List<Transaction> transactions = transactionService.getTransactionsByCategory(categoryId, accountId, pageable);
 
         return ResponseEntity.ok().body(transactions);
 

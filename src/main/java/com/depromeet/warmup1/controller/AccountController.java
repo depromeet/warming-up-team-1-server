@@ -1,8 +1,8 @@
 package com.depromeet.warmup1.controller;
 
 
-import com.depromeet.warmup1.dto.AccountDto;
-import com.depromeet.warmup1.entity.Account;
+import com.depromeet.warmup1.dto.AccountRequest;
+import com.depromeet.warmup1.dto.AccountResponse;
 import com.depromeet.warmup1.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +16,23 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/accounts")
-    public ResponseEntity<Account> saveAccount(@ModelAttribute AccountDto.Request Request) {
-        Account account = accountService.createAccount(Request);
+    public ResponseEntity<AccountResponse> saveAccount(@ModelAttribute AccountRequest request,
+                                                       @PathVariable Long id) {
+        AccountResponse account = accountService.createAccount(request, id);
         return ResponseEntity.ok().body(account);
     }
 
     @GetMapping("/accounts/{id}")
-    public ResponseEntity<AccountDto.Response> getAccount(@PathVariable Long id) {
+    public ResponseEntity<AccountResponse> getAccount(@PathVariable Long id) {
 
-        AccountDto.Response response = accountService.getAccount(id);
+        AccountResponse response = accountService.getAccount(id);
 
         return ResponseEntity.ok().body(response);
     }
 
     @PutMapping("/accounts/{id}")
-    public ResponseEntity<String> updateAccount(@PathVariable Long id, @ModelAttribute AccountDto.Request Request) {
-        accountService.updateAccount(Request, id);
+    public ResponseEntity<String> updateAccount(@PathVariable Long id, @ModelAttribute AccountRequest request) {
+        accountService.updateAccount(request, id);
         return ResponseEntity.ok().body("success");
     }
 
