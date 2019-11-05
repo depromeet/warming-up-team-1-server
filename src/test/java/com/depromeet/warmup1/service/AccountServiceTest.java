@@ -30,7 +30,7 @@ public class AccountServiceTest {
 
 
     @Test
-    public void check_account() {
+    public void 가계부_조회() {
         //given
         Account account = TestHelper.createAccount(1l, 50000, 12);
         when(accountRepository.findById(account.getId())).thenReturn(Optional.ofNullable(account));
