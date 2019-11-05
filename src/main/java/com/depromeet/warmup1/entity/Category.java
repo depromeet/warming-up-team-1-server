@@ -23,7 +23,7 @@ public class Category {
 
     private String image;
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new LinkedList<>();
 
     @ManyToOne

@@ -20,7 +20,7 @@ public class Account {
 
     private Integer month;
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new LinkedList<>();
 
     @ManyToOne
