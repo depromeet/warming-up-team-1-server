@@ -21,8 +21,8 @@ public class CategoryController {
 
     @PostMapping("/categorys")
     public ResponseEntity<Category> createCategory(@ModelAttribute CategoryRequest categoryDto,
-                                                   @RequestAttribute Long id) {
-        return ResponseEntity.ok(categoryService.createCategory(categoryDto, id));
+                                                   @RequestParam Long conenctId) {
+        return ResponseEntity.ok(categoryService.createCategory(categoryDto, conenctId));
     }
 
     @PutMapping("/categorys")

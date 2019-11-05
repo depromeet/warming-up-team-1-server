@@ -17,8 +17,8 @@ public class AccountController {
 
     @PostMapping("/accounts")
     public ResponseEntity<AccountResponse> saveAccount(@ModelAttribute AccountRequest request,
-                                                       @PathVariable Long id) {
-        AccountResponse account = accountService.createAccount(request, id);
+                                                       @RequestParam Long connectId) {
+        AccountResponse account = accountService.createAccount(request, connectId);
         return ResponseEntity.ok().body(account);
     }
 
