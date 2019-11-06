@@ -54,9 +54,8 @@ public class MemberController {
 	}
 	
 	@GetMapping("api/members")
-	public ResponseEntity<Long> getMember(@RequestAttribute Long id){
-		System.out.println(id);
-		return ResponseEntity.ok().body(id);
-	}
-		
+	public ResponseEntity<Member> getMember(@PathVariable Long mid){
+		Member member = memberService.getMemberByMid(mid);
+		return ResponseEntity.ok().body(member);
+	}		
 }

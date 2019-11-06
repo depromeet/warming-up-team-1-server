@@ -24,7 +24,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public AccountResponse createAccount(AccountRequest request, Long connectId) {
+    public AccountResponse createAccount(AccountRequest request, String connectId) {
         Connect connect = connectRepository.findById(connectId)
                 .orElseThrow(NotFoundException::new);
         Optional<Account> findAccount = accountRepository.findByMonthAndConnect(request.getMonth(), connect);

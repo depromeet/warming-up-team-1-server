@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Category createCategory(CategoryRequest categoryDto, Long connectKey) {
+    public Category createCategory(CategoryRequest categoryDto, String connectKey) {
         Connect connect = connectRepository.findById(connectKey)
                 .orElseThrow(NotFoundException::new);
         Category category = categoryDto.toEntity(connect);
@@ -50,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategoryResponse> getCategoryList(Long connectKey, Long accountId) {
+    public List<CategoryResponse> getCategoryList(String connectKey, Long accountId) {
 
         Connect connect = connectRepository.findById(connectKey)
                 .orElseThrow(NotFoundException::new);

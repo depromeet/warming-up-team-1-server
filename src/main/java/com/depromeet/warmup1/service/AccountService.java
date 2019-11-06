@@ -4,7 +4,7 @@ import com.depromeet.warmup1.dto.AccountRequest;
 import com.depromeet.warmup1.dto.AccountResponse;
 
 public interface AccountService {
-    AccountResponse createAccount(AccountRequest request, Long connectId);
+    AccountResponse createAccount(AccountRequest request, String connectId);
 
     AccountResponse getAccount(Long accountId);
 

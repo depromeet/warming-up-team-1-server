@@ -21,7 +21,7 @@ public class CategoryController {
 
     @PostMapping("/categorys")
     public ResponseEntity<Category> createCategory(@ModelAttribute CategoryRequest categoryDto,
-                                                   @RequestParam Long conenctId) {
+                                                   @RequestParam String conenctId) {
         return ResponseEntity.ok(categoryService.createCategory(categoryDto, conenctId));
     }
 
@@ -33,7 +33,7 @@ public class CategoryController {
     }
 
     @GetMapping("/categorys")
-    public ResponseEntity<List<CategoryResponse>> getCategory(@RequestAttribute Long id, @RequestParam Long accountId) {
+    public ResponseEntity<List<CategoryResponse>> getCategory(@RequestAttribute String id, @RequestParam Long accountId) {
         return ResponseEntity.ok(categoryService.getCategoryList(id, accountId));
 
     }

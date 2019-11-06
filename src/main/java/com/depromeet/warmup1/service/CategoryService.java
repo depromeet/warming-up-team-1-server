@@ -7,9 +7,9 @@ import com.depromeet.warmup1.entity.Category;
 import java.util.List;
 
 public interface CategoryService {
-    Category createCategory(CategoryRequest categoryDto, Long connectKey);
+    Category createCategory(CategoryRequest categoryDto, String connectKey);
 
     void updateCategory(Long categoryId, CategoryRequest categoryDto);
 
-    List<CategoryResponse> getCategoryList(Long connectKey, Long accountId);
+    List<CategoryResponse> getCategoryList(String connectKey, Long accountId);
 }
