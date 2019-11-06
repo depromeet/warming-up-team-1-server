@@ -1,8 +1,10 @@
 package com.depromeet.warmup1.service;
 
 import com.depromeet.warmup1.TestHelper;
+import com.depromeet.warmup1.dto.AccountResponse;
 import com.depromeet.warmup1.entity.Account;
 import com.depromeet.warmup1.repository.AccountRepository;
+import com.depromeet.warmup1.repository.ConnectRepository;
 import com.depromeet.warmup1.service.impl.AccountServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,14 +22,12 @@ import static org.mockito.Mockito.when;
 public class AccountServiceTest {
     @Mock
     private AccountRepository accountRepository;
+    @Mock
+    private ConnectRepository connectRepository;
 
 
     private AccountService accountService;
 
-    @Before
-    public void setup() {
-        accountService = new AccountServiceImpl(accountRepository);
-    }
 
     @Test
     public void 가계부_조회() {
@@ -36,12 +36,17 @@ public class AccountServiceTest {
         when(accountRepository.findById(account.getId())).thenReturn(Optional.ofNullable(account));
 
         //when
-        Account result = accountService.getAccount(account.getId());
+        AccountResponse result = accountService.getAccount(account.getId());
 
         //then
         assertThat(result.getId(), is(1L));
         assertThat(result.getBudget(), is(50000));
         assertThat(result.getMonth(), is(12));
 
+    }
+
+    @Before
+    public void setup() {
+        accountService = new AccountServiceImpl(accountRepository, connectRepository);
     }
 }

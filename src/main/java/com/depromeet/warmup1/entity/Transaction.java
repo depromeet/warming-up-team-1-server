@@ -21,26 +21,26 @@ public class Transaction {
 
     private Integer money;
 
-    private String category;
-
     @Enumerated(value = EnumType.STRING)
     private TransactionCategory transactionCategory;
 
     private String memo;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
 
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-
     @Builder
     private Transaction(
             Integer money,
-            String category,
+            Category category,
             TransactionCategory transactionCategory,
             String memo,
             Account account) {
@@ -52,9 +52,10 @@ public class Transaction {
     }
 
     public void update(TransactionDto transactionDto,
-                       Account account) {
+                       Account account,
+                       Category category) {
         this.money = transactionDto.getMoney();
-        this.category = transactionDto.getCategory();
+        this.category = category;
         this.transactionCategory = transactionDto.getTransactionCategory();
         this.memo = transactionDto.getMemo();
         this.account = account;

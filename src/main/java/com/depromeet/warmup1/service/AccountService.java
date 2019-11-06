@@ -1,14 +1,14 @@
 package com.depromeet.warmup1.service;
 
-import com.depromeet.warmup1.dto.AccountDto;
-import com.depromeet.warmup1.entity.Account;
+import com.depromeet.warmup1.dto.AccountRequest;
+import com.depromeet.warmup1.dto.AccountResponse;
 
 public interface AccountService {
-    Account createAccount(AccountDto accountDto);
+    AccountResponse createAccount(AccountRequest request, Long connectId);
 
-    Account getAccount(Long accountId);
+    AccountResponse getAccount(Long accountId);
 
-    void updateAccount(AccountDto accountDto, Long accountId);
+    void updateAccount(AccountRequest request, Long accountId);
 
     void deleteAccount(Long accountId);
 }

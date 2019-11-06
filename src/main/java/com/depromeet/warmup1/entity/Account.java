@@ -3,6 +3,7 @@ package com.depromeet.warmup1.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -19,18 +20,25 @@ public class Account {
 
     private Integer month;
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Transaction> transactions = new LinkedList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "connect_id")
+    private Connect connect;
+
 
     @Builder
-    private Account(Integer budget, Integer month){
+    private Account(Integer budget, Integer month, Connect connect) {
+        this.connect = connect;
         this.budget = budget;
         this.month = month;
     }
 
-    public void update(Integer budget, Integer month){
+    public void update(Integer budget, Integer month) {
         this.budget = budget;
         this.month = month;
     }
-
 
 
 }

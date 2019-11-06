@@ -14,7 +14,7 @@ public interface TransactionService {
 
     List<Transaction> getTransactionsByAccount(Long accountId, Pageable pageable);
 
-    List<Transaction> getTransactionsByCategory(String category, Long accountId, Pageable pageable);
+    List<Transaction> getTransactionsByCategory(Long categoryId, Long accountId, Pageable pageable);
 
     void deleteTransaction(Long transactionId);
 }
