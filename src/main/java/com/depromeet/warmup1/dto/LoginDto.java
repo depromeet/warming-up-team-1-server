@@ -9,9 +9,10 @@ import lombok.Data;
 public class LoginDto {
     private String jwtToken;
     private String refreshToken;
+    private Long mid;
 
-    public static LoginDto from(String jwtToken, String refreshToken) {
-        return new LoginDto(jwtToken, refreshToken);
+    public static LoginDto from(String jwtToken, String refreshToken, Long mid) {
+        return new LoginDto(jwtToken, refreshToken, mid);
     }
 
 }

@@ -67,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
             return memberRepository.save(m);
         });
 
-        return LoginDto.from(jwtFactory.generateToken(member), jwtFactory.generateRefreshToken(member));
+        return LoginDto.from(jwtFactory.generateToken(member), jwtFactory.generateRefreshToken(member), member.getMid());
 
     }
 

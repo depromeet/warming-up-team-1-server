@@ -21,7 +21,7 @@ public class SwaggerConfig {
 	public Docket api() {
 		// Authentication header 처리를 위해 사용
 				List global = new ArrayList();
-				global.add(new ParameterBuilder().name("authorization").description("jwt token").parameterType("header")
+				global.add(new ParameterBuilder().name("Bearer").description("jwt token").parameterType("header")
 						.required(false).modelRef(new ModelRef("string")).build());
 
 				return new Docket(DocumentationType.SWAGGER_2).globalOperationParameters(global).select()
