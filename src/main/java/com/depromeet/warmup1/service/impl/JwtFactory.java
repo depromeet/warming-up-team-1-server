@@ -37,10 +37,6 @@ public class JwtFactory {
                 .withIssuer(jwtSettings.getTokenIssuer())
                 .withClaim("USERNAME", member.getName())
                 .withClaim("ID", member.getMid())
-                .withIssuedAt(java.sql.Timestamp.valueOf(currentTime))
-                .withExpiresAt(java.sql.Timestamp.valueOf(
-                        currentTime.plusMinutes(jwtSettings.getTokenExpirationTime())
-                ))
                 .sign(Algorithm.HMAC256(jwtSettings.getTokenSigningKey()));
 
 
