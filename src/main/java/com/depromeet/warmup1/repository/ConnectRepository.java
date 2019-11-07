@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.depromeet.warmup1.entity.Connect;
 
 public interface ConnectRepository extends JpaRepository<Connect, String> {
+	public Connect findOneByConnectKey(String connectKey);
 
 }

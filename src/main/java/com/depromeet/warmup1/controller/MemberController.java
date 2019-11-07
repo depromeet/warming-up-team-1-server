@@ -39,16 +39,16 @@ public class MemberController {
 		return ResponseEntity.ok().body(key);
 	}
 
-	@GetMapping("api/members/couple/{key}")
-	public ResponseEntity<List<Member>> getCouple(@PathVariable String key) {
-		List<Member> couple = memberService.getCouple(key);
+	@GetMapping("api/members/couple/{connectkey}")
+	public ResponseEntity<List<Member>> getCouple(@PathVariable String connectkey) {
+		List<Member> couple = memberService.getCouple(connectkey);
 		
 		return ResponseEntity.ok().body(couple);
 	}
 
-	@PutMapping("api/members/connect/{mid}/{key}")
-	public ResponseEntity<Member> connectMember(@PathVariable Long mid, @PathVariable String key) {
-		Member member = memberService.connectMember(mid, key);
+	@PutMapping("api/members/connect/{mid}/{connectkey}")
+	public ResponseEntity<Member> connectMember(@PathVariable Long mid, @PathVariable String connectkey) {
+		Member member = memberService.connectMember(mid, connectkey);
 		
 		return ResponseEntity.ok().body(member);
 	}
