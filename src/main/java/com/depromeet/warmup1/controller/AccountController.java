@@ -26,12 +26,12 @@ public class AccountController {
     public ResponseEntity<AccountResponse> getAccount(@PathVariable Long id) {
 
         AccountResponse response = accountService.getAccount(id);
-
         return ResponseEntity.ok().body(response);
     }
 
     @PutMapping("/accounts/{id}")
-    public ResponseEntity<String> updateAccount(@PathVariable Long id, @ModelAttribute AccountRequest request) {
+    public ResponseEntity<String> updateAccount(@PathVariable Long id,
+                                                @ModelAttribute AccountRequest request) {
         accountService.updateAccount(request, id);
         return ResponseEntity.ok().body("success");
     }
