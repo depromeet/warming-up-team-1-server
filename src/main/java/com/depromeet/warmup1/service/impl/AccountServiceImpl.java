@@ -4,10 +4,12 @@ package com.depromeet.warmup1.service.impl;
 import com.depromeet.warmup1.dto.AccountRequest;
 import com.depromeet.warmup1.dto.AccountResponse;
 import com.depromeet.warmup1.entity.Account;
+import com.depromeet.warmup1.entity.Category;
 import com.depromeet.warmup1.entity.Connect;
 import com.depromeet.warmup1.entity.TransactionCategory;
 import com.depromeet.warmup1.exception.NotFoundException;
 import com.depromeet.warmup1.repository.AccountRepository;
+import com.depromeet.warmup1.repository.CategoryRepository;
 import com.depromeet.warmup1.repository.ConnectRepository;
 import com.depromeet.warmup1.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +17,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
+
+    private static final String[] DEFUALT_CATEGORY = {"육아", "교통비", "식비", "경조사", "문화생활", "공과금", "쇼핑", "기타"};
     private final AccountRepository accountRepository;
     private final ConnectRepository connectRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional
@@ -32,6 +38,17 @@ public class AccountServiceImpl implements AccountService {
             return getAccount(findAccount.get().getId());
         }
         Account account = request.toEntity(connect);
+
+        IntStream.range(0, DEFUALT_CATEGORY.length)
+                .forEach(index -> {
+                    Category category = Category.builder()
+                            .connect(connect)
+                            .image(String.valueOf(index))
+                            .name(DEFUALT_CATEGORY[index])
+                            .build();
+                    categoryRepository.save(category);
+                });
+
         return AccountResponse.of(accountRepository.save(account), 0);
     }
 
