@@ -52,6 +52,7 @@ public class AccountServiceImpl implements AccountService {
         return AccountResponse.of(accountRepository.save(account), 0);
     }
 
+
     @Override
     @Transactional(readOnly = true)
     public AccountResponse getAccount(Long accountId) {
@@ -76,6 +77,7 @@ public class AccountServiceImpl implements AccountService {
 
         return AccountResponse.of(account, insufficientCash);
     }
+
 
     @Override
     @Transactional
