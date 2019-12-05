@@ -20,10 +20,10 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @PostMapping("/accounts/{id}/transactions")
-    public ResponseEntity<Transaction> saveTransaction(@PathVariable Long id,
+    @PostMapping("/accounts/{accountId}/transactions")
+    public ResponseEntity<Transaction> saveTransaction(@PathVariable Long accountId,
                                                        @ModelAttribute TransactionDto transactionDto) {
-        Transaction transaction = transactionService.createTransaction(transactionDto, id);
+        Transaction transaction = transactionService.createTransaction(transactionDto, accountId);
         return ResponseEntity.ok().body(transaction);
     }
 
@@ -51,10 +51,10 @@ public class TransactionController {
 
     }
 
-    @GetMapping("/accounts/{accountId}/transactions/category")
+    @GetMapping("/accounts/{accountId}/transactions/{categoryId}")
     public ResponseEntity<List<Transaction>> getTransactionsByCategory(@RequestParam(defaultValue = "0") int page,
                                                                        @RequestParam(defaultValue = "20") int size,
-                                                                       @NotNull @RequestParam Long categoryId,
+                                                                       @NotNull @PathVariable Long categoryId,
                                                                        @PathVariable Long accountId) {
 
         Pageable pageable = PageRequest.of(page, size);

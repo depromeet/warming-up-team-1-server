@@ -7,10 +7,12 @@ import com.depromeet.warmup1.entity.Transaction;
 import com.depromeet.warmup1.entity.TransactionCategory;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
 @Setter
+@ToString
 public class TransactionDto {
     private Integer money;
 

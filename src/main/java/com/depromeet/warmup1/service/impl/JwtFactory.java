@@ -23,42 +23,37 @@ import java.util.UUID;
 public class JwtFactory {
 
     private static final String HEADER_PREFIX = "Bearer ";
+    private static final String USERNAME = "USERNAME";
+    private static final String ID = "ID";
 
     private final JWTVerifier jwtVerifier;
     private final JwtConfig.JwtSettings jwtSettings;
 
 
     public String generateToken(Member member) {
-        String token;
 
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        token = JWT.create()
+        return JWT.create()
                 .withIssuer(jwtSettings.getTokenIssuer())
-                .withClaim("USERNAME", member.getName())
-                .withClaim("ID", member.getMid())
+                .withClaim(USERNAME, member.getName())
+                .withClaim(ID, member.getMid())
                 .sign(Algorithm.HMAC256(jwtSettings.getTokenSigningKey()));
 
-
-        return token;
 
     }
 
     public String generateRefreshToken(Member member) {
-        String token;
+
 
         LocalDateTime currentTime = LocalDateTime.now();
 
-        token = JWT.create()
+        return JWT.create()
                 .withIssuer(jwtSettings.getTokenIssuer())
                 .withKeyId(UUID.randomUUID().toString())
-                .withClaim("USERNAME", member.getName())
-                .withClaim("ID", member.getMid())
+                .withClaim(USERNAME, member.getName())
+                .withClaim(ID, member.getMid())
                 .withIssuedAt(java.sql.Timestamp.valueOf(currentTime))
                 .sign(Algorithm.HMAC256(jwtSettings.getTokenSigningKey()));
 
-
-        return token;
 
     }
 

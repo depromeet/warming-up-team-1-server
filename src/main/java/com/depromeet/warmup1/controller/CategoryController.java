@@ -19,22 +19,22 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping("/categorys")
+    @PostMapping("/categories")
     public ResponseEntity<Category> createCategory(@ModelAttribute CategoryRequest categoryDto,
-                                                   @RequestParam String conenctId) {
-        return ResponseEntity.ok(categoryService.createCategory(categoryDto, conenctId));
+                                                   @RequestParam String connectId) {
+        return ResponseEntity.ok(categoryService.createCategory(categoryDto, connectId));
     }
 
-    @PutMapping("/categorys")
+    @PutMapping("/categories")
     public ResponseEntity<String> updateCategory(@RequestParam Long categoryId,
                                                  @ModelAttribute CategoryRequest categoryDto) {
         categoryService.updateCategory(categoryId, categoryDto);
         return ResponseEntity.ok("success");
     }
 
-    @GetMapping("/categorys")
-    public ResponseEntity<List<CategoryResponse>> getCategory(@RequestAttribute String id, @RequestParam Long accountId) {
-        return ResponseEntity.ok(categoryService.getCategoryList(id, accountId));
+    @GetMapping("/categories")
+    public ResponseEntity<List<CategoryResponse>> getCategory(@RequestAttribute String userId, @RequestParam Long accountId) {
+        return ResponseEntity.ok(categoryService.getCategoryList(userId, accountId));
 
     }
 

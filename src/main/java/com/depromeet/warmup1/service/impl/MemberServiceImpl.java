@@ -72,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public String getJwtToken(String refreshToken) {
-        Long id = jwtFactory.getMemberId(refreshToken).get();
+        Long id = jwtFactory.getMemberId(refreshToken).orElseThrow(NotFoundException::new);
         Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
 
         return jwtFactory.generateToken(member);
