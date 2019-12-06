@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.depromeet.warmup1.config.JwtConfig;
+import com.depromeet.warmup1.dto.TokenDao;
 import com.depromeet.warmup1.entity.Member;
 import com.depromeet.warmup1.exception.JWTException;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class JwtFactory {
     private static final String HEADER_PREFIX = "Bearer ";
     private static final String USERNAME = "USERNAME";
     private static final String ID = "ID";
+    private static final String CONNECT_KEY = "CONNECT_KEY";
 
     private final JWTVerifier jwtVerifier;
     private final JwtConfig.JwtSettings jwtSettings;
@@ -36,6 +38,7 @@ public class JwtFactory {
                 .withIssuer(jwtSettings.getTokenIssuer())
                 .withClaim(USERNAME, member.getName())
                 .withClaim(ID, member.getMid())
+                .withClaim(CONNECT_KEY, member.getConnectKey())
                 .sign(Algorithm.HMAC256(jwtSettings.getTokenSigningKey()));
 
 
@@ -57,7 +60,7 @@ public class JwtFactory {
 
     }
 
-    public Optional<Long> getMemberId(String token) {
+    public Optional<TokenDao> getTokenClaim(String token) {
         if (StringUtils.isEmpty(token)) {
             return Optional.empty();
         }
@@ -69,7 +72,7 @@ public class JwtFactory {
     }
 
 
-    private Optional<Long> decodeToken(String header) {
+    private Optional<TokenDao> decodeToken(String header) {
 
         String token;
         try {
@@ -88,12 +91,18 @@ public class JwtFactory {
 
         Map<String, Claim> claims = decodedJWT.getClaims();
         Claim idClaim = claims.get("ID");
-        if (idClaim == null) {
+        Claim connectKeyClaim = claims.get("CONNECT_KEY");
+        if (idClaim == null || connectKeyClaim == null) {
             log.warn("Failed to decode jwt token. header:" + header);
             throw new JWTException("Failed to decode jwt token. header:" + header);
         }
 
-        return Optional.of(idClaim.asLong());
+        return Optional.of(
+                TokenDao.builder()
+                        .connectKey(connectKeyClaim.asString())
+                        .memberId(idClaim.asLong())
+                        .build()
+        );
     }
 
     private String tokenExtractor(String header) {

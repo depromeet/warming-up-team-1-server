@@ -1,5 +1,6 @@
 package com.depromeet.warmup1.interceptor;
 
+import com.depromeet.warmup1.dto.TokenDao;
 import com.depromeet.warmup1.exception.UnauthorizedException;
 import com.depromeet.warmup1.service.impl.JwtFactory;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         log.info(request.getHeader("authorization"));
 
         String token = request.getHeader("authorization");
-        Long id = jwtFactory.getMemberId(token)
+
+        TokenDao claims = jwtFactory.getTokenClaim(token)
                 .orElseThrow(() -> new UnauthorizedException("Token is invalid."));
 
-        request.setAttribute("id", id);
+
+        request.setAttribute("id", claims.getMemberId());
+        request.setAttribute("connectKey", claims.getConnectKey());
 
         return super.preHandle(request, response, handler);
     }
