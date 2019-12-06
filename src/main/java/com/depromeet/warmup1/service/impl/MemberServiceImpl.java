@@ -3,6 +3,7 @@ package com.depromeet.warmup1.service.impl;
 import com.depromeet.warmup1.adapter.KakaoAdapter;
 import com.depromeet.warmup1.dto.KakaoUserDto;
 import com.depromeet.warmup1.dto.LoginDto;
+import com.depromeet.warmup1.dto.TokenDao;
 import com.depromeet.warmup1.entity.Connect;
 import com.depromeet.warmup1.entity.Member;
 import com.depromeet.warmup1.exception.ApiFailedException;
@@ -72,8 +73,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public String getJwtToken(String refreshToken) {
-        Long id = jwtFactory.getMemberId(refreshToken).orElseThrow(NotFoundException::new);
-        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+        TokenDao tokenDao = jwtFactory.getTokenClaim(refreshToken).orElseThrow(NotFoundException::new);
+        Member member = memberRepository.findById(tokenDao.getMemberId()).orElseThrow(NotFoundException::new);
 
         return jwtFactory.generateToken(member);
 

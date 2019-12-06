@@ -16,6 +16,7 @@ HELP.md
 
 ### IntelliJ IDEA ###
 .idea
+out/
 *.iws
 *.iml
 *.ipr
@@ -71,3 +72,5 @@ config.properties
 ### VS Code ###
 .vscode/
 **.class
+
+
