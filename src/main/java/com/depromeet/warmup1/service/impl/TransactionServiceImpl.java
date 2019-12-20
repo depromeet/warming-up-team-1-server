@@ -1,6 +1,7 @@
 package com.depromeet.warmup1.service.impl;
 
 import com.depromeet.warmup1.dto.TransactionDto;
+import com.depromeet.warmup1.dto.TransactionResponse;
 import com.depromeet.warmup1.entity.Account;
 import com.depromeet.warmup1.entity.Category;
 import com.depromeet.warmup1.entity.Transaction;
@@ -26,13 +27,13 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Transaction createTransaction(TransactionDto transactionDto, Long accountId) {
+    public void createTransaction(TransactionDto transactionDto, Long accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
         Category category = categoryRepository.findById(transactionDto.getCategoryId())
                 .orElseThrow(NotFoundException::new);
 
-        return transactionRepository.save(transactionDto.toEntity(account, category));
+        transactionRepository.save(transactionDto.toEntity(account, category));
     }
 
     @Override
@@ -57,18 +58,27 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Transaction> getTransactionsByAccount(Long accountId, Pageable pageable) {
+    public List<TransactionResponse> getTransactionsByAccount(Long accountId, Pageable pageable) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
 
         return transactionRepository.findAllByAccount(account, pageable)
                 .stream()
+                .map((t) -> {
+                    return TransactionResponse.builder()
+                            .categoryId(t.getCategory().getId())
+                            .id(t.getId())
+                            .memo(t.getMemo())
+                            .money(t.getMoney())
+                            .transactionCategory(t.getTransactionCategory())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Transaction> getTransactionsByCategory(Long categoryId, Long accountId, Pageable pageable) {
+    public List<TransactionResponse> getTransactionsByCategory(Long categoryId, Long accountId, Pageable pageable) {
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(NotFoundException::new);
@@ -78,6 +88,15 @@ public class TransactionServiceImpl implements TransactionService {
 
         return transactionRepository.findAllByCategoryAndAccount(category, account, pageable)
                 .stream()
+                .map((t) -> {
+                    return TransactionResponse.builder()
+                            .categoryId(t.getCategory().getId())
+                            .id(t.getId())
+                            .memo(t.getMemo())
+                            .money(t.getMoney())
+                            .transactionCategory(t.getTransactionCategory())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 

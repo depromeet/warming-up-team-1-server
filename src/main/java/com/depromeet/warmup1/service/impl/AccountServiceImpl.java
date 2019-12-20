@@ -13,6 +13,7 @@ import com.depromeet.warmup1.repository.CategoryRepository;
 import com.depromeet.warmup1.repository.ConnectRepository;
 import com.depromeet.warmup1.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AccountServiceImpl implements AccountService {
 
     private static final String[] DEFUALT_CATEGORY = {"육아", "교통비", "식비", "경조사", "문화생활", "공과금", "쇼핑", "기타"};
@@ -30,10 +32,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public AccountResponse createAccount(AccountRequest request, String connectId) {
-        Connect connect = connectRepository.findById(connectId)
+    public AccountResponse createAccount(AccountRequest request, String connectKey) {
+        Connect connect = connectRepository.findById(connectKey)
                 .orElseThrow(NotFoundException::new);
         Optional<Account> findAccount = accountRepository.findByMonthAndConnect(request.getMonth(), connect);
+
+
         if (findAccount.isPresent()) {
             return getAccount(findAccount.get().getId());
         }

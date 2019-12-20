@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.depromeet.warmup1.config.JwtConfig;
+import com.depromeet.warmup1.dto.TokenDao;
 import com.depromeet.warmup1.entity.Member;
 import com.depromeet.warmup1.exception.JWTException;
 import lombok.RequiredArgsConstructor;
@@ -23,46 +24,43 @@ import java.util.UUID;
 public class JwtFactory {
 
     private static final String HEADER_PREFIX = "Bearer ";
+    private static final String USERNAME = "USERNAME";
+    private static final String ID = "ID";
+    private static final String CONNECT_KEY = "CONNECT_KEY";
 
     private final JWTVerifier jwtVerifier;
     private final JwtConfig.JwtSettings jwtSettings;
 
 
     public String generateToken(Member member) {
-        String token;
 
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        token = JWT.create()
+        return JWT.create()
                 .withIssuer(jwtSettings.getTokenIssuer())
-                .withClaim("USERNAME", member.getName())
-                .withClaim("ID", member.getMid())
+                .withClaim(USERNAME, member.getName())
+                .withClaim(ID, member.getMid())
+                .withClaim(CONNECT_KEY, member.getConnectKey())
                 .sign(Algorithm.HMAC256(jwtSettings.getTokenSigningKey()));
 
-
-        return token;
 
     }
 
     public String generateRefreshToken(Member member) {
-        String token;
+
 
         LocalDateTime currentTime = LocalDateTime.now();
 
-        token = JWT.create()
+        return JWT.create()
                 .withIssuer(jwtSettings.getTokenIssuer())
                 .withKeyId(UUID.randomUUID().toString())
-                .withClaim("USERNAME", member.getName())
-                .withClaim("ID", member.getMid())
+                .withClaim(USERNAME, member.getName())
+                .withClaim(ID, member.getMid())
                 .withIssuedAt(java.sql.Timestamp.valueOf(currentTime))
                 .sign(Algorithm.HMAC256(jwtSettings.getTokenSigningKey()));
 
 
-        return token;
-
     }
 
-    public Optional<Long> getMemberId(String token) {
+    public Optional<TokenDao> getTokenClaim(String token) {
         if (StringUtils.isEmpty(token)) {
             return Optional.empty();
         }
@@ -74,7 +72,7 @@ public class JwtFactory {
     }
 
 
-    private Optional<Long> decodeToken(String header) {
+    private Optional<TokenDao> decodeToken(String header) {
 
         String token;
         try {
@@ -98,7 +96,11 @@ public class JwtFactory {
             throw new JWTException("Failed to decode jwt token. header:" + header);
         }
 
-        return Optional.of(idClaim.asLong());
+        return Optional.of(
+                TokenDao.builder()
+                        .memberId(idClaim.asLong())
+                        .build()
+        );
     }
 
     private String tokenExtractor(String header) {
