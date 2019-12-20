@@ -91,15 +91,13 @@ public class JwtFactory {
 
         Map<String, Claim> claims = decodedJWT.getClaims();
         Claim idClaim = claims.get("ID");
-        Claim connectKeyClaim = claims.get("CONNECT_KEY");
-        if (idClaim == null || connectKeyClaim == null) {
+        if (idClaim == null) {
             log.warn("Failed to decode jwt token. header:" + header);
             throw new JWTException("Failed to decode jwt token. header:" + header);
         }
 
         return Optional.of(
                 TokenDao.builder()
-                        .connectKey(connectKeyClaim.asString())
                         .memberId(idClaim.asLong())
                         .build()
         );

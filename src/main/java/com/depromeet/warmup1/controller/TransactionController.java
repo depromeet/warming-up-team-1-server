@@ -2,7 +2,7 @@ package com.depromeet.warmup1.controller;
 
 
 import com.depromeet.warmup1.dto.TransactionDto;
-import com.depromeet.warmup1.entity.Transaction;
+import com.depromeet.warmup1.dto.TransactionResponse;
 import com.depromeet.warmup1.service.TransactionService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +30,10 @@ public class TransactionController {
             @ApiImplicitParam(name = "transactionDto", value = "거래 정보", paramType = "body")
     })
     @PostMapping("/accounts/{accountId}/transactions")
-    public ResponseEntity<Transaction> saveTransaction(@PathVariable Long accountId,
-                                                       @ModelAttribute TransactionDto transactionDto) {
-        Transaction transaction = transactionService.createTransaction(transactionDto, accountId);
-        return ResponseEntity.ok().body(transaction);
+    public ResponseEntity saveTransaction(@PathVariable Long accountId,
+                                          @RequestBody TransactionDto transactionDto) {
+        transactionService.createTransaction(transactionDto, accountId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
@@ -42,14 +43,14 @@ public class TransactionController {
             @ApiImplicitParam(name = "transactionId", value = "거래내역 고유키", paramType = "path"),
             @ApiImplicitParam(name = "transactionDto", value = "거래 정보", paramType = "body")
     })
-    @PostMapping("/accounts/{accountId}/transactions/{transactionId}")
-    public ResponseEntity<String> updateTransaction(@PathVariable Long accountId,
-                                                    @PathVariable Long transactionId,
-                                                    @ModelAttribute TransactionDto transactionDto) {
+    @PutMapping("/accounts/{accountId}/transactions/{transactionId}")
+    public ResponseEntity updateTransaction(@PathVariable Long accountId,
+                                            @PathVariable Long transactionId,
+                                            @RequestBody TransactionDto transactionDto) {
 
         transactionService.updateTransaction(transactionDto, transactionId, accountId);
 
-        return ResponseEntity.ok().body("success");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
 
@@ -60,13 +61,13 @@ public class TransactionController {
             @ApiImplicitParam(name = "page", value = "거래내역 고유키", paramType = "param")
     })
     @GetMapping("/accounts/{accountId}/transactions")
-    public ResponseEntity<List<Transaction>> getTransactionsByAccount(@RequestParam(defaultValue = "0") int page,
-                                                                      @RequestParam(defaultValue = "20") int size,
-                                                                      @PathVariable Long accountId) {
+    public ResponseEntity<List<TransactionResponse>> getTransactionsByAccount(@RequestParam(defaultValue = "0") int page,
+                                                                              @RequestParam(defaultValue = "20") int size,
+                                                                              @PathVariable Long accountId) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        List<Transaction> transactions = transactionService.getTransactionsByAccount(accountId, pageable);
+        List<TransactionResponse> transactions = transactionService.getTransactionsByAccount(accountId, pageable);
 
         return ResponseEntity.ok().body(transactions);
 
@@ -78,15 +79,15 @@ public class TransactionController {
             @ApiImplicitParam(name = "categoryId", value = "카테고리 고유키", paramType = "path"),
             @ApiImplicitParam(name = "page", value = "거래내역 고유키", paramType = "param")
     })
-    @GetMapping("/accounts/{accountId}/transactions/{categoryId}")
-    public ResponseEntity<List<Transaction>> getTransactionsByCategory(@RequestParam(defaultValue = "0") int page,
-                                                                       @RequestParam(defaultValue = "20") int size,
-                                                                       @NotNull @PathVariable Long categoryId,
-                                                                       @PathVariable Long accountId) {
+    @GetMapping("/accounts/{accountId}/categories/{categoryId}")
+    public ResponseEntity<List<TransactionResponse>> getTransactionsByCategory(@RequestParam(defaultValue = "0") int page,
+                                                                               @RequestParam(defaultValue = "20") int size,
+                                                                               @NotNull @PathVariable Long categoryId,
+                                                                               @PathVariable Long accountId) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        List<Transaction> transactions = transactionService.getTransactionsByCategory(categoryId, accountId, pageable);
+        List<TransactionResponse> transactions = transactionService.getTransactionsByCategory(categoryId, accountId, pageable);
 
         return ResponseEntity.ok().body(transactions);
 
@@ -98,10 +99,10 @@ public class TransactionController {
             @ApiImplicitParam(name = "transactionId", value = "거래내역 고유키", paramType = "path")
     })
     @DeleteMapping("/accounts/transactions/{transactionId}")
-    public ResponseEntity<String> getTransactionsByCategory(@PathVariable Long transactionId) {
+    public ResponseEntity getTransactionsByCategory(@PathVariable Long transactionId) {
 
         transactionService.deleteTransaction(transactionId);
-        return ResponseEntity.ok().body("success");
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 

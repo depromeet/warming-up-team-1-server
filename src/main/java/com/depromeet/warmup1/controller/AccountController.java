@@ -24,7 +24,7 @@ public class AccountController {
             @ApiImplicitParam(name = "accountRequest", value = "월마다 가계부 기본 정보", paramType = "body")
     })
     @PostMapping("/accounts")
-    public ResponseEntity<AccountResponse> saveAccount(@ModelAttribute AccountRequest accountRequest,
+    public ResponseEntity<AccountResponse> saveAccount(@RequestBody AccountRequest accountRequest,
                                                        @RequestParam String connectKey) {
         AccountResponse account = accountService.createAccount(accountRequest, connectKey);
         return ResponseEntity.status(201).body(account);
@@ -42,14 +42,14 @@ public class AccountController {
         return ResponseEntity.ok().body(response);
     }
 
-    @ApiOperation(value = "가계부 데이터 수")
+    @ApiOperation(value = "가계부 데이터 수정")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "accountId", value = "가계부 고유키", paramType = "path"),
             @ApiImplicitParam(name = "accountRequest", value = "월마다 가계부 기본 정보", paramType = "body")
     })
     @PutMapping("/accounts/{accountId}")
     public ResponseEntity<String> updateAccount(@PathVariable Long accountId,
-                                                @ModelAttribute AccountRequest request) {
+                                                @RequestBody AccountRequest request) {
         accountService.updateAccount(request, accountId);
         return ResponseEntity.ok().body("success");
     }
