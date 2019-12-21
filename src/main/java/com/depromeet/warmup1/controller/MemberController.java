@@ -27,7 +27,7 @@ public class MemberController {
 
 	@ApiOperation(value = "로그인/회원가입")
 	@PostMapping("api/members/login")
-	@ApiImplicitParam(name = "kakaoToken", value = "카카오토큰", dataType = "string", required = true)
+	@ApiImplicitParam(name = "kakaoToken", value = "카카오토큰", required = true)
 	public ResponseEntity<LoginDto> login(@RequestBody String kakaoToken) {
 		return ResponseEntity.ok(memberService.getOrCreateMember(kakaoToken));
 	}
@@ -47,7 +47,7 @@ public class MemberController {
 	}
 
 	@ApiOperation(value = "connectKey를 통한 연동된 부부 조회")
-	@ApiImplicitParam(name = "connectkey", value = "연동키", dataType = "string", required = true)
+	@ApiImplicitParam(name = "connectkey", value = "연동키", required = true)
 	@GetMapping("api/members/couple/{connectkey}")
 	public ResponseEntity<List<Member>> getCouple(@PathVariable String connectkey) {
 		List<Member> couple = memberService.getCouple(connectkey);
@@ -56,8 +56,8 @@ public class MemberController {
 	}
 
 	@ApiOperation(value = "connectKey를 이용한 부부 연동")
-	@ApiImplicitParams({ @ApiImplicitParam(name = "mid", value = "멤버id", dataType = "Long", required = true),
-			@ApiImplicitParam(name = "connectkey", value = "연동키", dataType = "string", required = true) })
+	@ApiImplicitParams({ @ApiImplicitParam(name = "mid", value = "멤버id", required = true),
+			@ApiImplicitParam(name = "connectkey", value = "연동키", required = true) })
 	@PutMapping("api/members/connect/{mid}/{connectkey}")
 	public ResponseEntity<Member> connectMember(@PathVariable Long mid, @PathVariable String connectkey) {
 		Member member = memberService.connectMember(mid, connectkey);
