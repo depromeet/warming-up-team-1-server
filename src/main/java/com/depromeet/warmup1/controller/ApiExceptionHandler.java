@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.depromeet.warmup1.exception.BadRequestException;
 import com.depromeet.warmup1.exception.JWTException;
@@ -41,5 +42,10 @@ public class ApiExceptionHandler {
     public ResponseEntity<String> handleBadRequestException(BadRequestException ex){
     	return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
+    
+    @ExceptionHandler(HttpClientErrorException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> handleHttpClientErrorException (HttpClientErrorException ex){
+    	return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
 }
